@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.partner.git.GitHandlerTest
 -------------------------------------------------------------------------------
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 3, Time elapsed: 0 sec - in com.partner.git.GitHandlerTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 3, Time elapsed: 0.077 sec
