@@ -15,6 +15,8 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 import org.eclipse.jgit.util.StringUtils;
 import org.jboss.logging.Logger;
@@ -35,8 +37,6 @@ public class EmailHandler {
 	private static final Properties GIT_HUB_PROPERTIES = PropertiesLoader.loadPropertiesFile("github.properties");
 	private static final Properties BC_PROPERTIES = PropertiesLoader.loadPropertiesFile("business-central.properties");
 	
-	@Resource(mappedName="java:jboss/mail/Default")
-    private Session mailSession;
 	
 	private Configuration configuration = null;
 	
@@ -62,6 +62,9 @@ public class EmailHandler {
             
 			StringWriter bodyWriter = new StringWriter();
 			template.process(data, bodyWriter);
+			InitialContext ctx = new InitialContext();  
+			Session mailSession = (Session)ctx.lookup("java:jboss/mail/Default");
+			log.info(mailSession);
 			MimeMessage m = new MimeMessage(mailSession);
             Address from = new InternetAddress(emailProperties.getProperty(SENDER_ADDRESS, DEFAULT_EMAIL_PROPERTIES.getProperty(SENDER_ADDRESS)));
             Address[] to = new InternetAddress[] {new InternetAddress(defaultIfNull(toAddress, emailProperties.getProperty("errorHandler", DEFAULT_EMAIL_PROPERTIES.getProperty("errorHandler")))) };
@@ -78,6 +81,8 @@ public class EmailHandler {
 			log.error(e.getMessage());
 		} catch (TemplateException e) {
 			log.error(e.getMessage());
+		} catch (NamingException e) {
+			e.printStackTrace();
 		}
 	}
 
