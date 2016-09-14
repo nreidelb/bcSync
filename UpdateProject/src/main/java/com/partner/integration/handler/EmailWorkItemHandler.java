@@ -10,13 +10,13 @@ public class EmailWorkItemHandler implements WorkItemHandler {
 	
 	EmailHandler emailhandler = new EmailHandler();
 
-	@Override
+	
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
 		emailhandler.sendEmail("pushToGitHubFailed", null, null, "FAIL FAIL FAIL FAIL");
 		
 	}
 
-	@Override
+	
 	public void abortWorkItem(WorkItem workItem, WorkItemManager manager) {
 		// TODO Auto-generated method stub
 		

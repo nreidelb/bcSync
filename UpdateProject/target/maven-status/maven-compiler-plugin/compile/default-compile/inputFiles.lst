@@ -1,5 +1,5 @@
-/home/nreidelb/projects/bnsf/bcSync/UpdateProject/src/main/java/com/partner/integration/git/GitHandler.java
-/home/nreidelb/projects/bnsf/bcSync/UpdateProject/src/main/java/com/partner/utility/PropertiesLoader.java
-/home/nreidelb/projects/bnsf/bcSync/UpdateProject/src/main/java/com/partner/integration/email/EmailHandler.java
-/home/nreidelb/projects/bnsf/bcSync/UpdateProject/src/main/java/com/partner/integration/handler/EmailWorkItemHandler.java
-/home/nreidelb/projects/bnsf/bcSync/UpdateProject/src/main/java/com/partner/integration/repo/GitHubHandler.java
+/home/nreidelb/projects/partner/bcSync/UpdateProject/src/main/java/com/partner/integration/git/GitHandler.java
+/home/nreidelb/projects/partner/bcSync/UpdateProject/src/main/java/com/partner/utility/PropertiesLoader.java
+/home/nreidelb/projects/partner/bcSync/UpdateProject/src/main/java/com/partner/integration/handler/EmailWorkItemHandler.java
+/home/nreidelb/projects/partner/bcSync/UpdateProject/src/main/java/com/partner/integration/repo/GitHubHandler.java
+/home/nreidelb/projects/partner/bcSync/UpdateProject/src/main/java/com/partner/integration/email/EmailHandler.java

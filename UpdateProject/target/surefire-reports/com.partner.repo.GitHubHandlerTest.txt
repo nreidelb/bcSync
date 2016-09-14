@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.partner.repo.GitHubHandlerTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.033 sec - in com.partner.repo.GitHubHandlerTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.038 sec - in com.partner.repo.GitHubHandlerTest
