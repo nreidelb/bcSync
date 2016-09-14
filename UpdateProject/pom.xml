@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.partner</groupId>
+  <artifactId>UpdateProject</artifactId>
+  <version>1.0.1-SNAPSHOT</version>
+  <packaging>kjar</packaging>
+  <name>UpdateProject</name>
+  <dependencies>
+	<dependency>
+	    <groupId>org.eclipse.jgit</groupId>
+	    <artifactId>org.eclipse.jgit</artifactId>
+	    <version>4.0.1.201506240215-r</version>
+	</dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+	</dependency>
+	<dependency>
+    	<groupId>org.jboss.logging</groupId>
+    	<artifactId>jboss-logging</artifactId>
+    	<version>3.3.0.Final</version>
+	</dependency>
+	<dependency>
+	    <groupId>javax.mail</groupId>
+	    <artifactId>mail</artifactId>
+	    <version>1.4.7</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.freemarker</groupId>
+	    <artifactId>freemarker</artifactId>
+	    <version>2.3.23</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.kie</groupId>
+	    <artifactId>kie-api</artifactId>
+	    <version>6.4.0.Final</version>
+	</dependency>
+	
+  </dependencies>
+  <repositories>
+    <repository>
+      <id>guvnor-m2-repo</id>
+      <name>Guvnor M2 Repo</name>
+      <url>http://localhost:8080/business-central/maven2/</url>
+    </repository>
+  </repositories>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.kie</groupId>
+        <artifactId>kie-maven-plugin</artifactId>
+        <version>6.4.0.Final-redhat-3</version>
+        <extensions>true</extensions>
+      </plugin>
+    </plugins>
+  </build>
+  <distributionManagement>
+    <repository>
+      <id>guvnor-m2-repo</id>
+      <name>maven repo</name>
+      <url>http://localhost:8080/business-central/maven2/</url>
+      <layout>default</layout>
+    </repository>
+   </distributionManagement>
+</project>

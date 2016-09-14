@@ -1,0 +1,11 @@
+import org.drools.core.process.core.datatype.impl.type.StringDataType;
+import org.drools.core.process.core.datatype.impl.type.ObjectDataType;
+
+[
+   [
+   "name" : "ErrorEmail",
+    "displayName" : "Error Email",
+    "icon" : "defaultemailicon.gif"
+  ] 
+
+]
