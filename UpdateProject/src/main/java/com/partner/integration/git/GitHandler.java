@@ -87,7 +87,8 @@ public class GitHandler {
 						}
 					}
 				}
-			} catch (Exception e) {;
+			} catch (Exception e) {
+				e.printStackTrace();
 				failureMessage = e.getMessage();
 			}			
 		} catch (IOException e) {

@@ -18,7 +18,7 @@ public class RemoteToBusinessCentralWorkItemHandler implements WorkItemHandler{
 		Boolean success = StringUtils.isEmptyOrNull(failureMessage);
 		
 		HashMap<String, Object> results = new HashMap<String,Object>();
-		results.put("success", success);
+		results.put("pushSuccess", success);
 		results.put("failureMessage", failureMessage);
 		manager.completeWorkItem(workItem.getId(), results);
 		
