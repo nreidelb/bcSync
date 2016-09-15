@@ -12,6 +12,11 @@ import org.drools.core.process.core.datatype.impl.type.ObjectDataType;
     ],
     "displayName" : "Error Email",
     "icon" : "defaultemailicon.gif"
-  ] 
+  ],
+  [
+   "name" : "RemoteToBusinessCentral",
+    "displayName" : "Take Changes from Enterprise Git Repo and Push them to Business Central",
+    "icon" : "defaultemailicon.gif"
+  ]
 
 ]

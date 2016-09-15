@@ -14,6 +14,7 @@ import org.eclipse.jgit.transport.PushResult;
 import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.RemoteRefUpdate;
 import org.eclipse.jgit.transport.RemoteRefUpdate.Status;
+import org.eclipse.jgit.util.StringUtils;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.jboss.logging.Logger;
 
@@ -38,22 +39,23 @@ public class GitHandler {
 	private static final Repo REMOTE = new Repo(REMOTE_REPO_NAME, REMOTE_REPO_URL, REIDELBOT_CREDENTIALS_PROVIDER);
 	private static final Repo BUSINESS_CENTRAL = new Repo(BUSINESS_CENTRAL_REPO_NAME,BPMS_REPO_URL, BPMS_ADMIN_CREDENTIALS_PROVIDER);
 
-	public void updateBusinessCentralRepo(){
-		pullThenPush(REMOTE, BUSINESS_CENTRAL, MASTER_BRANCH_NAME);
+	//Returns failure message or null if process was a success
+	public String updateBusinessCentralRepo(){
+		return pullThenPush(REMOTE, BUSINESS_CENTRAL, MASTER_BRANCH_NAME);
 	}
 
-	
-	public void updateEnterpriseGitRepository(){
-		pullThenPush(BUSINESS_CENTRAL, REMOTE, MASTER_BRANCH_NAME);
+	//Returns failure message or null if process was a success
+	public String updateEnterpriseGitRepository(){
+		return pullThenPush(BUSINESS_CENTRAL, REMOTE, MASTER_BRANCH_NAME);
 	}
 	
-	public void pullRequestToEnterpriseGit(String branch){
-		pullThenPush(BUSINESS_CENTRAL, REMOTE, branch);
+	//Returns failure message or null if process was a success
+	public String pullRequestToEnterpriseGit(String branch){
+		return pullThenPush(BUSINESS_CENTRAL, REMOTE, branch);
 	}
 
-	private void pullThenPush(Repo pull, Repo push, String toBranch) {
-		boolean sucess = true;
-		Exception failureException = null;
+	private String pullThenPush(Repo pull, Repo push, String toBranch) {
+		String failureMessage = null;
 		Git git = null;
 
 		try {
@@ -79,30 +81,27 @@ public class GitHandler {
 				for(PushResult result:results){
 					for(RemoteRefUpdate update:result.getRemoteUpdates()){
 						if(!Status.OK.equals(update.getStatus()) && !Status.UP_TO_DATE.equals(update.getStatus())){
-							log.info("Push to "+ push.getName() + " failed with status: " + update.getStatus() 
-								+ " and message: " + update.getMessage());
-							sucess = false;
+							failureMessage = "Push to "+ push.getName() + " failed with status: " + update.getStatus() 
+								+ " and message: " + update.getMessage();
 							break;
 						}
 					}
 				}
-			} catch (Exception e) {
-				log.error(e.getMessage());
-				failureException = e;
-				sucess = false;
+			} catch (Exception e) {;
+				failureMessage = e.getMessage();
 			}			
 		} catch (IOException e) {
-			failureException = e;
-			log.error(e.getMessage());
-			sucess = false;
+			failureMessage = e.getMessage();
 		} finally {
 			if(git != null){
 				git.close();
 			}
-			if(!sucess){
-				//TODO:Email about failure
-			}
 		}
+		if(!StringUtils.isEmptyOrNull(failureMessage)){
+			log.error(failureMessage);
+			return  failureMessage;
+		}
+		return null;
 	}
 
 	private void configureRemoteRepositories(Git git) throws IOException {
