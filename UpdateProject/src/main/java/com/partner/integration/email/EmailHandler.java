@@ -63,7 +63,6 @@ public class EmailHandler {
 			template.process(data, bodyWriter);
 			InitialContext ctx = new InitialContext();  
 			Session mailSession = (Session)ctx.lookup("java:jboss/mail/Default");
-			log.info(mailSession);
 			MimeMessage m = new MimeMessage(mailSession);
             Address from = new InternetAddress(emailProperties.getProperty(SENDER_ADDRESS, DEFAULT_EMAIL_PROPERTIES.getProperty(SENDER_ADDRESS)));
             Address[] to = new InternetAddress[] {new InternetAddress(defaultIfNull(toAddress, emailProperties.getProperty("errorHandler", DEFAULT_EMAIL_PROPERTIES.getProperty("errorHandler")))) };

@@ -1,5 +1,7 @@
 package com.partner.integration.handler;
 
+import java.util.HashMap;
+
 import org.kie.api.runtime.process.WorkItem;
 import org.kie.api.runtime.process.WorkItemHandler;
 import org.kie.api.runtime.process.WorkItemManager;
@@ -17,6 +19,7 @@ public class ErrorEmailWorkItemHandler implements WorkItemHandler {
 		String userContact = (String) workItem.getParameter("userContact");
 		String errorMessage = (String) workItem.getParameter("errorMessage");
 		emailhandler.sendEmail(fileTemplateName, toAddress, userContact, errorMessage);
+		manager.completeWorkItem(workItem.getId(), new HashMap<String,Object>());
 		
 	}
 
