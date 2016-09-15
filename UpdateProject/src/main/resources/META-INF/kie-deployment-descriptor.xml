@@ -36,7 +36,7 @@
         </work-item-handler>
         <work-item-handler>
             <resolver>mvel</resolver>
-            <identifier>new com.partner.integration.handler.EmailWorkItemHandler()</identifier>
+            <identifier>new com.partner.integration.handler.ErrorEmailWorkItemHandler()</identifier>
             <parameters/>
             <name>ErrorEmail</name>
         </work-item-handler>

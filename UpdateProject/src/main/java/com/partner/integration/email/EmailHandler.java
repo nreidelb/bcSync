@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.annotation.Resource;
 import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -49,7 +48,7 @@ public class EmailHandler {
 		}
 	}
 	
-	public void sendEmail(String templateFileName, String toAddress, String userEmail, String errorDetails){
+	public void sendEmail(String templateFileName, String toAddress, String userContact, String errorDetails){
 		try {
 			Properties emailProperties = PropertiesLoader.loadPropertiesFile(templateFileName + ".properties");
 			Template template = getFreemarkerConfiguration().getTemplate(templateFileName +".ftl");
@@ -57,14 +56,13 @@ public class EmailHandler {
 			Map<String, Object> data = new HashMap<String, Object>();
 			data.put("gitRepo", GIT_HUB_PROPERTIES.getProperty("repoUrl"));
 			data.put("bcRepo", BC_PROPERTIES.getProperty("repoUrl"));
-			data.put("userEmail", defaultIfNull(userEmail,DEFAULT_EMAIL_PROPERTIES.getProperty("defaultUserEmail")));
+			data.put("userContact", defaultIfNull(userContact,DEFAULT_EMAIL_PROPERTIES.getProperty("defaultUserContact")));
 			data.put("errorMessage",errorDetails);
             
 			StringWriter bodyWriter = new StringWriter();
 			template.process(data, bodyWriter);
 			InitialContext ctx = new InitialContext();  
 			Session mailSession = (Session)ctx.lookup("java:jboss/mail/Default");
-			log.info(mailSession);
 			MimeMessage m = new MimeMessage(mailSession);
             Address from = new InternetAddress(emailProperties.getProperty(SENDER_ADDRESS, DEFAULT_EMAIL_PROPERTIES.getProperty(SENDER_ADDRESS)));
             Address[] to = new InternetAddress[] {new InternetAddress(defaultIfNull(toAddress, emailProperties.getProperty("errorHandler", DEFAULT_EMAIL_PROPERTIES.getProperty("errorHandler")))) };

@@ -4,6 +4,12 @@ import org.drools.core.process.core.datatype.impl.type.ObjectDataType;
 [
    [
    "name" : "ErrorEmail",
+    "parameters" : [
+      "fileTemplateName" : new StringDataType(),
+      "toAddress" : new StringDataType(),
+      "userContact" : new StringDataType(),
+      "errorMessage" : new StringDataType(),
+    ],
     "displayName" : "Error Email",
     "icon" : "defaultemailicon.gif"
   ] 
