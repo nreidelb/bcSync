@@ -46,6 +46,24 @@
             <parameters/>
             <name>RemoteToBusinessCentral</name>
         </work-item-handler>
+		<work-item-handler>
+            <resolver>mvel</resolver>
+            <identifier>new com.partner.integration.handler.PushPermissionWorkItemHandler()</identifier>
+            <parameters/>
+            <name>PushPermission</name>
+        </work-item-handler>
+        <work-item-handler>
+            <resolver>mvel</resolver>
+            <identifier>new com.partner.integration.handler.ResolutionStrategyWorkItemHandler()</identifier>
+            <parameters/>
+            <name>ResolutionStrategy</name>
+        </work-item-handler>
+        <work-item-handler>
+            <resolver>mvel</resolver>
+            <identifier>new com.partner.integration.handler.AutomatedResolutionWorkItemhandler()</identifier>
+            <parameters/>
+            <name>AutomatedResolution</name>
+        </work-item-handler>
     </work-item-handlers>
     <environment-entries/>
     <configurations/>
