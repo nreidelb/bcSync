@@ -6,13 +6,17 @@ import org.kie.api.runtime.process.WorkItemManager;
 
 import com.partner.integration.email.EmailHandler;
 
-public class EmailWorkItemHandler implements WorkItemHandler {
+public class ErrorEmailWorkItemHandler implements WorkItemHandler {
 	
 	EmailHandler emailhandler = new EmailHandler();
 
 	
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
-		emailhandler.sendEmail("pushToGitHubFailed", null, null, "FAIL FAIL FAIL FAIL");
+		String fileTemplateName = (String) workItem.getParameter("fileTemplateName");
+		String toAddress = (String) workItem.getParameter("toAddress");
+		String userContact = (String) workItem.getParameter("userContact");
+		String errorMessage = (String) workItem.getParameter("errorMessage");
+		emailhandler.sendEmail(fileTemplateName, toAddress, userContact, errorMessage);
 		
 	}
 
