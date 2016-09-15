@@ -1,6 +1,0 @@
-com/partner/integration/email/EmailHandler.class
-com/partner/integration/repo/GitHubHandler.class
-com/partner/integration/git/GitHandler$Repo.class
-com/partner/integration/git/GitHandler.class
-com/partner/utility/PropertiesLoader.class
-com/partner/integration/handler/EmailWorkItemHandler.class
