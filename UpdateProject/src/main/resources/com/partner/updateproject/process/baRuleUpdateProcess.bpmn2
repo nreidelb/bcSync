@@ -297,13 +297,13 @@
         <di:waypoint xsi:type="dc:Point" x="59.0" y="330.0"/>
         <di:waypoint xsi:type="dc:Point" x="70.0" y="330.0"/>
         <di:waypoint xsi:type="dc:Point" x="100.0" y="330.0"/>
-        <bpmndi:BPMNLabel id="BPMNLabel_4"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_44"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="BPMNShape_Task_1" targetElement="BPMNShape_ExclusiveGateway_1">
         <di:waypoint xsi:type="dc:Point" x="210.0" y="330.0"/>
         <di:waypoint xsi:type="dc:Point" x="257.0" y="330.0"/>
         <di:waypoint xsi:type="dc:Point" x="267.0" y="330.0"/>
-        <bpmndi:BPMNLabel id="BPMNLabel_5"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_45"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_4" bpmnElement="SequenceFlow_4" sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_Task_2">
         <di:waypoint xsi:type="dc:Point" x="292.0" y="305.0"/>
