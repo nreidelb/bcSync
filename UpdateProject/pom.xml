@@ -50,7 +50,6 @@
   </repositories>
   
   <build>
-	  <pluginManagement>
 	    <plugins>
 	      <plugin>
 	        <groupId>org.kie</groupId>
@@ -59,7 +58,6 @@
 	        <extensions>true</extensions>
 	      </plugin>
 	    </plugins>
-	  </pluginManagement>
   </build>
   
   <distributionManagement>
