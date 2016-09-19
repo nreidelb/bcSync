@@ -58,12 +58,13 @@
             <parameters/>
             <name>ResolutionStrategy</name>
         </work-item-handler>
-        <work-item-handler>
+        <!-- <work-item-handler>
             <resolver>mvel</resolver>
             <identifier>new com.partner.integration.handler.AutomatedResolutionWorkItemhandler()</identifier>
             <parameters/>
             <name>AutomatedResolution</name>
         </work-item-handler>
+        -->
     </work-item-handlers>
     <environment-entries/>
     <configurations/>
