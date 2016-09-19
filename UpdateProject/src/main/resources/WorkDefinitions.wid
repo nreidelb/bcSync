@@ -21,32 +21,36 @@ import org.drools.core.process.core.datatype.impl.type.ObjectDataType;
   
   [
    "name" : "PushPermission",
-    "parameters" : [
-      "param1" : new StringDataType(),
-      "param2" : new StringDataType(),
-    ],
     "displayName" : "Push Permission Check",
     "icon" : "icon_here.gif"
   ],
   
   [
    "name" : "ResolutionStrategy",
-    "parameters" : [
-      "param1" : new StringDataType(),
-      "param2" : new StringDataType(),
-    ],
     "displayName" : "Resolution Strategy Check",
     "icon" : "icon_here.gif"
   ],
   
   [
    "name" : "AutomatedResolution",
-    "parameters" : [
-      "param1" : new StringDataType(),
-      "param2" : new StringDataType(),
-    ],
     "displayName" : "Automated Code Failure Resolution",
     "icon" : "icon_here.gif"
+  ],
+  
+  [
+   "name" : "PushToEnterpriseGit",
+    "displayName" : "Push Changes from Business Central to Enterprise Git Repo",
+    "icon" : "icon_here.gif"
+  ],
+  
+  [
+   "name" : "PullRequest",
+    "parameters" : [
+      "title" : new StringDataType(),
+      "message" : new StringDataType(),
+      "branch" : new StringDataType()
+    ],
+    "displayName" : "Create Pull Request",
+    "icon" : "icon_here.gif"
   ]
-
 ]

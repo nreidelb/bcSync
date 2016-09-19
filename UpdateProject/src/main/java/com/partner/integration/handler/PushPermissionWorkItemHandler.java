@@ -14,8 +14,9 @@ public class PushPermissionWorkItemHandler implements WorkItemHandler {
 
 	@Override
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
-		pushPermissionhandler.checkPushPermission();
-		manager.completeWorkItem(workItem.getId(), new HashMap<String,Object>());
+		HashMap<String,Object> results = new HashMap<String,Object>();
+		results.put("baHasPushPermission", pushPermissionhandler.checkPushPermission());
+		manager.completeWorkItem(workItem.getId(), results);
 	}
 
 	@Override

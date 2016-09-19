@@ -14,8 +14,9 @@ public class AutomatedResolutionWorkItemHandler implements WorkItemHandler {
 	
 	@Override
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
+		HashMap<String,Object> results = new HashMap<String,Object>();
 		automatedResolutionHandler.automatedResolution();
-		manager.completeWorkItem(workItem.getId(), new HashMap<String,Object>());	
+		manager.completeWorkItem(workItem.getId(), results);	
 	}
 
 	@Override

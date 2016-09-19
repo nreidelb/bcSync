@@ -6,7 +6,9 @@ public class PushPermissionHandler {
 		// TODO Auto-generated constructor stub
 	}
 
-	public void checkPushPermission() {
+	public Boolean checkPushPermission() {
 		//TODO implement this
+		Boolean hasPushPermission = false;
+		return hasPushPermission;
 	}
 }

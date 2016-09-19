@@ -6,7 +6,10 @@ public class ResolutionStrategyHandler {
 		// TODO Auto-generated constructor stub
 	}
 
-	public void determineResolutionStrategy() {
+	public Boolean determineResolutionStrategy() {
 		//TODO implement this
+		
+		Boolean manualResolutionRequired = true;
+		return manualResolutionRequired;
 	}
 }
