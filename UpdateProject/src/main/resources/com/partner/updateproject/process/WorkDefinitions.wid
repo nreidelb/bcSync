@@ -21,30 +21,18 @@ import org.drools.core.process.core.datatype.impl.type.ObjectDataType;
   
   [
    "name" : "PushPermission",
-    "parameters" : [
-      "param1" : new StringDataType(),
-      "param2" : new StringDataType(),
-    ],
     "displayName" : "Push Permission Check",
     "icon" : "icon_here.gif"
   ],
   
   [
    "name" : "ResolutionStrategy",
-    "parameters" : [
-      "param1" : new StringDataType(),
-      "param2" : new StringDataType(),
-    ],
     "displayName" : "Resolution Strategy Check",
     "icon" : "icon_here.gif"
   ],
   
   [
    "name" : "AutomatedResolution",
-    "parameters" : [
-      "param1" : new StringDataType(),
-      "param2" : new StringDataType(),
-    ],
     "displayName" : "Automated Code Failure Resolution",
     "icon" : "icon_here.gif"
   ]

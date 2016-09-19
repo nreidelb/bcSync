@@ -6,7 +6,10 @@ public class AutomatedResolutionHandler {
 		// TODO Auto-generated constructor stub
 	}
 
-	public void automatedResolution() {
+	public Boolean automatedResolution() {
 		//TODO implement this
+		
+		Boolean success = true;
+		return success;
 	}
 }
