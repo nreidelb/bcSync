@@ -13,13 +13,16 @@ public class PropertiesLoader {
 	public static Properties loadPropertiesFile(String name){
 		String dataDir = System.getProperty("jboss.server.data.directory"); 
 		//Used for testing purposes
-		//String dataDir = "/home/nreidelb/projects/partner/bcSyncData";
+		//String dataDir = "/home/nreidelb/projects/partner/bcSyncData/";
 		InputStream is;
 		try {
 			is = new FileInputStream(dataDir + name);		
 			Properties globalProp = new Properties();  
 			globalProp.load(is);
 			is.close();
+			if(globalProp.isEmpty()){
+				log.error("Could not find file" + name + " at location " + dataDir + name);
+			}
 			return globalProp;
 		} catch (IOException e) {
 			log.error(e.getMessage());
