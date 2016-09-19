@@ -14,8 +14,9 @@ public class ResolutionStrategyWorkItemHandler implements WorkItemHandler {
 
 	@Override
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
-		resolutionStrategyHandler.determineResolutionStrategy();
-		manager.completeWorkItem(workItem.getId(), new HashMap<String,Object>());
+		HashMap<String,Object> results = new HashMap<String,Object>();
+		results.put("manualResolutionRequired", resolutionStrategyHandler.determineResolutionStrategy());
+		manager.completeWorkItem(workItem.getId(), results);
 	}
 	
 	@Override

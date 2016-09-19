@@ -16,7 +16,7 @@
   <bpmn2:process id="UpdateProject.baRuleUpdateProcess" drools:packageName="org.jbpm" drools:version="1.0" name="Update Rule Changes" isExecutable="true">
     <bpmn2:property id="errorMessage" itemSubjectRef="_errorMessageItem" name="errorMessage"/>
     <bpmn2:property id="baHasPushPermission" itemSubjectRef="__3135F5AB-47BC-4AC6-A2DE-CF993C272C8A_pushSuccessOutputXItem" name="baHasPushPermission"/>
-    <bpmn2:property id="bcToGitPushSuccess" itemSubjectRef="__3135F5AB-47BC-4AC6-A2DE-CF993C272C8A_pushSuccessOutputXItem" name="bcToGitPushSuccess"/>
+    <bpmn2:property id="pushSuccess" itemSubjectRef="__3135F5AB-47BC-4AC6-A2DE-CF993C272C8A_pushSuccessOutputXItem" name="pushSuccess"/>
     <bpmn2:property id="manualResolutionRequired" itemSubjectRef="__3135F5AB-47BC-4AC6-A2DE-CF993C272C8A_pushSuccessOutputXItem" name="manualResolutionRequired"/>
     <bpmn2:startEvent id="StartEvent_1" name="Start Event 1">
       <bpmn2:extensionElements>
@@ -35,7 +35,7 @@
       <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
       <bpmn2:ioSpecification id="InputOutputSpecification_2">
-        <bpmn2:dataOutput id="DataOutput_1" itemSubjectRef="__3135F5AB-47BC-4AC6-A2DE-CF993C272C8A_pushSuccessOutputXItem" name="Result"/>
+        <bpmn2:dataOutput id="DataOutput_1" itemSubjectRef="__3135F5AB-47BC-4AC6-A2DE-CF993C272C8A_pushSuccessOutputXItem" name="baHasPushPermission"/>
         <bpmn2:inputSet id="InputSet_2" name="Input Set 2"/>
         <bpmn2:outputSet id="OutputSet_2" name="Output Set 2">
           <bpmn2:dataOutputRefs>DataOutput_1</bpmn2:dataOutputRefs>
@@ -47,10 +47,10 @@
       </bpmn2:dataOutputAssociation>
     </bpmn2:task>
     <bpmn2:sequenceFlow id="SequenceFlow_1" drools:priority="1" sourceRef="StartEvent_1" targetRef="Task_1"/>
-    <bpmn2:endEvent id="EndEvent_1" name="End Event 1">
+    <bpmn2:endEvent id="EndEvent_1">
       <bpmn2:extensionElements>
         <drools:metaData name="elementname">
-          <drools:metaValue><![CDATA[End Event 1]]></drools:metaValue>
+          <drools:metaValue><![CDATA[]]></drools:metaValue>
         </drools:metaData>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
@@ -70,6 +70,17 @@
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_6">
+        <bpmn2:dataOutput id="DataOutput_2" itemSubjectRef="__3135F5AB-47BC-4AC6-A2DE-CF993C272C8A_pushSuccessOutputXItem" name="pushSuccess"/>
+        <bpmn2:inputSet id="InputSet_4" name="Input Set 4"/>
+        <bpmn2:outputSet id="OutputSet_6" name="Output Set 6">
+          <bpmn2:dataOutputRefs>DataOutput_2</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_2">
+        <bpmn2:sourceRef>DataOutput_2</bpmn2:sourceRef>
+        <bpmn2:targetRef>pushSuccess</bpmn2:targetRef>
+      </bpmn2:dataOutputAssociation>
     </bpmn2:task>
     <bpmn2:sequenceFlow id="SequenceFlow_4" drools:priority="1" name="Can push" sourceRef="ExclusiveGateway_1" targetRef="Task_2">
       <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_1" language="http://www.mvel.org/2.0">baHasPushPermission == true</bpmn2:conditionExpression>
@@ -81,7 +92,7 @@
     </bpmn2:exclusiveGateway>
     <bpmn2:sequenceFlow id="SequenceFlow_5" drools:priority="1" sourceRef="Task_2" targetRef="ExclusiveGateway_2"/>
     <bpmn2:sequenceFlow id="SequenceFlow_6" drools:priority="1" name="Push success" sourceRef="ExclusiveGateway_2" targetRef="EndEvent_1">
-      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_3" language="http://www.mvel.org/2.0">bcToGitPushSuccess == true</bpmn2:conditionExpression>
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_3" language="http://www.mvel.org/2.0">pushSuccess == true</bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
     <bpmn2:task id="Task_3" drools:taskName="ErrorEmail" drools:displayName="Error Email" drools:icon="defaultemailicon.gif" name="Error Email">
       <bpmn2:extensionElements>
@@ -118,7 +129,7 @@
       </bpmn2:dataInputAssociation>
     </bpmn2:task>
     <bpmn2:sequenceFlow id="SequenceFlow_7" drools:priority="1" name="Push failure" sourceRef="ExclusiveGateway_2" targetRef="Task_3">
-      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_4" language="http://www.mvel.org/2.0">bcToGitPushSuccess == false</bpmn2:conditionExpression>
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_4" language="http://www.mvel.org/2.0">pushSuccess == false</bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
     <bpmn2:task id="Task_4" drools:taskName="ResolutionStrategy" drools:displayName="Resolution Strategy Check" drools:icon="icon_here.gif" name="Resolution Strategy Check">
       <bpmn2:extensionElements>
@@ -128,6 +139,17 @@
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_8</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_9</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_8">
+        <bpmn2:dataOutput id="DataOutput_3" itemSubjectRef="__3135F5AB-47BC-4AC6-A2DE-CF993C272C8A_pushSuccessOutputXItem" name="manualResolutionRequired"/>
+        <bpmn2:inputSet id="InputSet_6" name="Input Set 6"/>
+        <bpmn2:outputSet id="OutputSet_8" name="Output Set 8">
+          <bpmn2:dataOutputRefs>DataOutput_3</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_3">
+        <bpmn2:sourceRef>DataOutput_3</bpmn2:sourceRef>
+        <bpmn2:targetRef>manualResolutionRequired</bpmn2:targetRef>
+      </bpmn2:dataOutputAssociation>
     </bpmn2:task>
     <bpmn2:sequenceFlow id="SequenceFlow_8" drools:priority="1" sourceRef="Task_3" targetRef="Task_4"/>
     <bpmn2:exclusiveGateway id="ExclusiveGateway_3" gatewayDirection="Diverging">
@@ -148,19 +170,19 @@
     <bpmn2:sequenceFlow id="SequenceFlow_10" drools:priority="1" name="Automated resolution OK" sourceRef="ExclusiveGateway_3" targetRef="Task_5">
       <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_6" language="http://www.mvel.org/2.0">manualResolutionRequired == false</bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
-    <bpmn2:endEvent id="EndEvent_2" name="End Event 2">
+    <bpmn2:endEvent id="EndEvent_2">
       <bpmn2:extensionElements>
         <drools:metaData name="elementname">
-          <drools:metaValue><![CDATA[End Event 2]]></drools:metaValue>
+          <drools:metaValue><![CDATA[]]></drools:metaValue>
         </drools:metaData>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_12</bpmn2:incoming>
       <bpmn2:terminateEventDefinition id="TerminateEventDefinition_2"/>
     </bpmn2:endEvent>
-    <bpmn2:endEvent id="EndEvent_3" name="End Event 3">
+    <bpmn2:endEvent id="EndEvent_3">
       <bpmn2:extensionElements>
         <drools:metaData name="elementname">
-          <drools:metaValue><![CDATA[End Event 3]]></drools:metaValue>
+          <drools:metaValue><![CDATA[]]></drools:metaValue>
         </drools:metaData>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_11</bpmn2:incoming>
@@ -202,10 +224,10 @@
     <bpmn2:sequenceFlow id="SequenceFlow_13" drools:priority="1" name="Cannot push" sourceRef="ExclusiveGateway_1" targetRef="Task_6">
       <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_2" language="http://www.mvel.org/2.0">baHasPushPermission == false</bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
-    <bpmn2:endEvent id="EndEvent_4" name="End Event 4">
+    <bpmn2:endEvent id="EndEvent_4">
       <bpmn2:extensionElements>
         <drools:metaData name="elementname">
-          <drools:metaValue><![CDATA[End Event 4]]></drools:metaValue>
+          <drools:metaValue><![CDATA[]]></drools:metaValue>
         </drools:metaData>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_14</bpmn2:incoming>
@@ -229,9 +251,7 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_EndEvent_1" bpmnElement="EndEvent_1">
         <dc:Bounds height="36.0" width="36.0" x="576.0" y="146.0"/>
-        <bpmndi:BPMNLabel id="BPMNLabel_3" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="14.0" width="65.0" x="562.0" y="182.0"/>
-        </bpmndi:BPMNLabel>
+        <bpmndi:BPMNLabel id="BPMNLabel_3" labelStyle="BPMNLabelStyle_1"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_1" bpmnElement="ExclusiveGateway_1" isMarkerVisible="true">
         <dc:Bounds height="50.0" width="50.0" x="267.0" y="305.0"/>
@@ -271,27 +291,21 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_EndEvent_2" bpmnElement="EndEvent_2">
         <dc:Bounds height="36.0" width="36.0" x="767.0" y="138.0"/>
-        <bpmndi:BPMNLabel id="BPMNLabel_11" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="14.0" width="65.0" x="753.0" y="174.0"/>
-        </bpmndi:BPMNLabel>
+        <bpmndi:BPMNLabel id="BPMNLabel_11" labelStyle="BPMNLabelStyle_1"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_EndEvent_3" bpmnElement="EndEvent_3">
         <dc:Bounds height="36.0" width="36.0" x="886.0" y="403.0"/>
-        <bpmndi:BPMNLabel id="BPMNLabel_12" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="14.0" width="65.0" x="872.0" y="439.0"/>
-        </bpmndi:BPMNLabel>
+        <bpmndi:BPMNLabel id="BPMNLabel_12" labelStyle="BPMNLabelStyle_1"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_Task_6" bpmnElement="Task_6">
         <dc:Bounds height="50.0" width="110.0" x="238.0" y="479.0"/>
-        <bpmndi:BPMNLabel>
+        <bpmndi:BPMNLabel id="BPMNLabel_13">
           <dc:Bounds height="28.0" width="70.0" x="258.0" y="490.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_EndEvent_4" bpmnElement="EndEvent_4">
         <dc:Bounds height="36.0" width="36.0" x="442.0" y="486.0"/>
-        <bpmndi:BPMNLabel labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="14.0" width="65.0" x="428.0" y="522.0"/>
-        </bpmndi:BPMNLabel>
+        <bpmndi:BPMNLabel id="BPMNLabel_14" labelStyle="BPMNLabelStyle_1"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1" bpmnElement="SequenceFlow_1" sourceElement="BPMNShape_StartEvent_1" targetElement="BPMNShape_Task_1">
         <di:waypoint xsi:type="dc:Point" x="59.0" y="330.0"/>
@@ -351,6 +365,7 @@
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_10" bpmnElement="SequenceFlow_10" sourceElement="BPMNShape_ExclusiveGateway_3" targetElement="BPMNShape_Task_5">
         <di:waypoint xsi:type="dc:Point" x="785.0" y="321.0"/>
         <di:waypoint xsi:type="dc:Point" x="785.0" y="358.0"/>
+        <di:waypoint xsi:type="dc:Point" x="785.0" y="328.0"/>
         <di:waypoint xsi:type="dc:Point" x="785.0" y="396.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_19">
           <dc:Bounds height="28.0" width="80.0" x="746.0" y="360.0"/>
@@ -364,17 +379,16 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_12" bpmnElement="SequenceFlow_12" sourceElement="BPMNShape_ExclusiveGateway_3" targetElement="BPMNShape_EndEvent_2">
         <di:waypoint xsi:type="dc:Point" x="785.0" y="271.0"/>
-        <di:waypoint xsi:type="dc:Point" x="785.0" y="248.0"/>
         <di:waypoint xsi:type="dc:Point" x="785.0" y="174.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_21">
-          <dc:Bounds height="42.0" width="63.0" x="754.0" y="249.0"/>
+          <dc:Bounds height="42.0" width="63.0" x="754.0" y="224.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_13" bpmnElement="SequenceFlow_13" sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_Task_6">
         <di:waypoint xsi:type="dc:Point" x="292.0" y="355.0"/>
         <di:waypoint xsi:type="dc:Point" x="292.0" y="417.0"/>
         <di:waypoint xsi:type="dc:Point" x="293.0" y="479.0"/>
-        <bpmndi:BPMNLabel>
+        <bpmndi:BPMNLabel id="BPMNLabel_22">
           <dc:Bounds height="14.0" width="71.0" x="257.0" y="418.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
@@ -382,7 +396,7 @@
         <di:waypoint xsi:type="dc:Point" x="348.0" y="504.0"/>
         <di:waypoint xsi:type="dc:Point" x="395.0" y="504.0"/>
         <di:waypoint xsi:type="dc:Point" x="442.0" y="504.0"/>
-        <bpmndi:BPMNLabel/>
+        <bpmndi:BPMNLabel id="BPMNLabel_23"/>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
     <bpmndi:BPMNLabelStyle id="BPMNLabelStyle_1">

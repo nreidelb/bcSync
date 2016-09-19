@@ -18,8 +18,10 @@ public class CreatePullRequestWorkitemHandler implements WorkItemHandler {
 		String message = (String) workItem.getParameter("message");
 		String branch = (String) workItem.getParameter("branch");
 		
+		HashMap<String,Object> results = new HashMap<String,Object>();
+		
 		gitHubHandler.createPullRequest(title, message, branch);
-		manager.completeWorkItem(workItem.getId(), new HashMap<String,Object>());
+		manager.completeWorkItem(workItem.getId(), results);
 	}
 
 	@Override
