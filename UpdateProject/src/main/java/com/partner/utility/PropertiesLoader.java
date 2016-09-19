@@ -8,10 +8,11 @@ import java.util.Properties;
 import org.jboss.logging.Logger;
 
 public class PropertiesLoader {
+	private static final String JBOSS_SERVER_DATA_DIRECTORY_PROPERTY = "jboss.server.data.directory";
 	private static final Logger log = Logger.getLogger(PropertiesLoader.class.getName());
 	
 	public static Properties loadPropertiesFile(String name){
-		String dataDir = System.getProperty("jboss.server.data.directory"); 
+		String dataDir = System.getProperty(JBOSS_SERVER_DATA_DIRECTORY_PROPERTY); 
 		//Used for testing purposes
 		//String dataDir = "/home/nreidelb/projects/partner/bcSyncData/";
 		InputStream is;
@@ -27,6 +28,7 @@ public class PropertiesLoader {
 		} catch (IOException e) {
 			log.error(e.getMessage());
 		}
+		log.error("Could not find file" + name + " at location " + dataDir + name + ". Make sure " + JBOSS_SERVER_DATA_DIRECTORY_PROPERTY + " is set to the correct directory in your standalone.xml" );
 		return null;
 		
 	}
