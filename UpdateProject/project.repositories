@@ -11,17 +11,17 @@
     <repository>
       <include>true</include>
       <metadata>
-        <id>guvnor-m2-repo</id>
-        <url>http://localhost:8080/business-central/maven2/</url>
-        <source>DISTRIBUTION_MANAGEMENT</source>
+        <id>fusesource</id>
+        <url>http://repo.fusesource.com/nexus/content/groups/public/</url>
+        <source>SETTINGS</source>
       </metadata>
     </repository>
     <repository>
       <include>true</include>
       <metadata>
-        <id>fusesource</id>
-        <url>http://repo.fusesource.com/nexus/content/groups/public/</url>
-        <source>SETTINGS</source>
+        <id>guvnor-m2-repo</id>
+        <url>http://localhost:8080/business-central/maven2/</url>
+        <source>DISTRIBUTION_MANAGEMENT</source>
       </metadata>
     </repository>
     <repository>
