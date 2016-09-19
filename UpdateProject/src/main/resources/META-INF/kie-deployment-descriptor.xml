@@ -34,6 +34,8 @@
             <parameters/>
             <name>Rest</name>
         </work-item-handler>
+        
+        <!-- Custom work item handlers -->
         <work-item-handler>
             <resolver>mvel</resolver>
             <identifier>new com.partner.integration.handler.ErrorEmailWorkItemHandler()</identifier>
@@ -63,6 +65,18 @@
             <identifier>new com.partner.integration.handler.AutomatedResolutionWorkItemHandler()</identifier>
             <parameters/>
             <name>AutomatedResolution</name>
+        </work-item-handler>
+        <work-item-handler>
+            <resolver>mvel</resolver>
+            <identifier>new com.partner.integration.handler.CreatePullRequestWorkItemHandler()</identifier>
+            <parameters/>
+            <name>PullRequest</name>
+        </work-item-handler>
+        <work-item-handler>
+            <resolver>mvel</resolver>
+            <identifier>new com.partner.integration.handler.PushToEnterpriseGitWorkItemHandler()</identifier>
+            <parameters/>
+            <name>PushToEnterpriseGit</name>
         </work-item-handler>
     </work-item-handlers>
     <environment-entries/>
