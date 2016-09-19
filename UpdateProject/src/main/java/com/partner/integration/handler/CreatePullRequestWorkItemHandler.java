@@ -8,7 +8,7 @@ import org.kie.api.runtime.process.WorkItemManager;
 
 import com.partner.integration.repo.GitHubHandler;
 
-public class CreatePullRequestWorkitemHandler implements WorkItemHandler {
+public class CreatePullRequestWorkItemHandler implements WorkItemHandler {
 
 	GitHubHandler gitHubHandler = new GitHubHandler();
 	
