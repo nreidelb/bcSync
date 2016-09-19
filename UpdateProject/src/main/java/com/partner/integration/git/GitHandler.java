@@ -24,20 +24,37 @@ public class GitHandler {
 	
 	private static final Logger log = Logger.getLogger(GitHandler.class.getName());
 	
-	private static final Properties GIT_HUB_PROPERTIES = PropertiesLoader.loadPropertiesFile("github.properties");
-	private static final Properties BC_PROPERTIES = PropertiesLoader.loadPropertiesFile("business-central.properties");
-	private static final Properties GENERAL_PROPERTIES = PropertiesLoader.loadPropertiesFile("general.properties");
-	
 	private static final String MASTER_BRANCH_NAME = "master";
-	private static final String GIT_REPO_LOCATION = GENERAL_PROPERTIES.getProperty("localRepoLocation");
-	private static final UsernamePasswordCredentialsProvider REIDELBOT_CREDENTIALS_PROVIDER = new UsernamePasswordCredentialsProvider(GIT_HUB_PROPERTIES.getProperty("userName"), GIT_HUB_PROPERTIES.getProperty("password"));
-	private static final UsernamePasswordCredentialsProvider BPMS_ADMIN_CREDENTIALS_PROVIDER = new UsernamePasswordCredentialsProvider(BC_PROPERTIES.getProperty("userName"), BC_PROPERTIES.getProperty("password"));
 	private static final String REMOTE_REPO_NAME = "remoteRepo";
 	private static final String BUSINESS_CENTRAL_REPO_NAME = "businessCentral";
-	private static final String BPMS_REPO_URL = BC_PROPERTIES.getProperty("repoUrl");
-	private static final String REMOTE_REPO_URL = GIT_HUB_PROPERTIES.getProperty("repoUrl");
-	private static final Repo REMOTE = new Repo(REMOTE_REPO_NAME, REMOTE_REPO_URL, REIDELBOT_CREDENTIALS_PROVIDER);
-	private static final Repo BUSINESS_CENTRAL = new Repo(BUSINESS_CENTRAL_REPO_NAME,BPMS_REPO_URL, BPMS_ADMIN_CREDENTIALS_PROVIDER);
+	
+	private final Properties GIT_HUB_PROPERTIES;
+	private final Properties BC_PROPERTIES;
+	private final Properties GENERAL_PROPERTIES;	
+	private final String GIT_REPO_LOCATION;
+	private final UsernamePasswordCredentialsProvider REIDELBOT_CREDENTIALS_PROVIDER;
+	private final UsernamePasswordCredentialsProvider BPMS_ADMIN_CREDENTIALS_PROVIDER;
+
+	private final String BPMS_REPO_URL;
+	private final String REMOTE_REPO_URL;
+	private final Repo REMOTE;
+	private final Repo BUSINESS_CENTRAL;
+	
+	public GitHandler(){
+		GIT_HUB_PROPERTIES = PropertiesLoader.loadPropertiesFile("github.properties");
+		BC_PROPERTIES = PropertiesLoader.loadPropertiesFile("business-central.properties");
+		GENERAL_PROPERTIES = PropertiesLoader.loadPropertiesFile("general.properties");
+		
+		GIT_REPO_LOCATION = GENERAL_PROPERTIES.getProperty("localRepoLocation");
+		BPMS_REPO_URL = BC_PROPERTIES.getProperty("repoUrl");
+		REMOTE_REPO_URL = GIT_HUB_PROPERTIES.getProperty("repoUrl");
+		
+		REIDELBOT_CREDENTIALS_PROVIDER = new UsernamePasswordCredentialsProvider(GIT_HUB_PROPERTIES.getProperty("userName"), GIT_HUB_PROPERTIES.getProperty("password"));
+		BPMS_ADMIN_CREDENTIALS_PROVIDER = new UsernamePasswordCredentialsProvider(BC_PROPERTIES.getProperty("userName"), BC_PROPERTIES.getProperty("password"));
+		
+		REMOTE = new Repo(REMOTE_REPO_NAME, REMOTE_REPO_URL, REIDELBOT_CREDENTIALS_PROVIDER);
+		BUSINESS_CENTRAL = new Repo(BUSINESS_CENTRAL_REPO_NAME,BPMS_REPO_URL, BPMS_ADMIN_CREDENTIALS_PROVIDER);
+	}
 
 	//Returns failure message or null if process was a success
 	public String updateBusinessCentralRepo(){
