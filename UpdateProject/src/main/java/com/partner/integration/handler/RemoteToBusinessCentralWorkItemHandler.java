@@ -13,6 +13,7 @@ public class RemoteToBusinessCentralWorkItemHandler implements WorkItemHandler{
 	
 	GitHandler gitHandler = new  GitHandler();
 
+	@Override
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
 		String failureMessage = gitHandler.updateBusinessCentralRepo();
 		Boolean success = StringUtils.isEmptyOrNull(failureMessage);
@@ -24,6 +25,7 @@ public class RemoteToBusinessCentralWorkItemHandler implements WorkItemHandler{
 		
 	}
 
+	@Override
 	public void abortWorkItem(WorkItem workItem, WorkItemManager manager) {
 		
 	}
