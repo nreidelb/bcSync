@@ -32,5 +32,13 @@ public class GitHandlerTest {
 		gitHandler.pullRequestToEnterpriseGit("testBranch");
 		
 	}
+	
+	//Ignore tests used locally which require setup
+	@Test
+	@Ignore
+	public void overwriteWithRemoteRepoTest(){
+		GitHandler gitHandler = new GitHandler();
+		gitHandler.overwriteWithRemoteRepo();
+	}
 
 }
