@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.ResetCommand.ResetType;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.RefAlreadyExistsException;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
@@ -14,14 +16,14 @@ import org.eclipse.jgit.transport.PushResult;
 import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.RemoteRefUpdate;
 import org.eclipse.jgit.transport.RemoteRefUpdate.Status;
-import org.eclipse.jgit.util.StringUtils;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+import org.eclipse.jgit.util.StringUtils;
 import org.jboss.logging.Logger;
 
 import com.partner.utility.PropertiesLoader;
 
 public class GitHandler {
-	
+
 	private static final Logger log = Logger.getLogger(GitHandler.class.getName());
 	
 	private static final String MASTER_BRANCH_NAME = "master";
@@ -32,7 +34,7 @@ public class GitHandler {
 	private final Properties BC_PROPERTIES;
 	private final Properties GENERAL_PROPERTIES;	
 	private final String GIT_REPO_LOCATION;
-	private final UsernamePasswordCredentialsProvider REIDELBOT_CREDENTIALS_PROVIDER;
+	private final UsernamePasswordCredentialsProvider AUTOMATED_USER_CREDENTIALS_PROVIDER;
 	private final UsernamePasswordCredentialsProvider BPMS_ADMIN_CREDENTIALS_PROVIDER;
 
 	private final String BPMS_REPO_URL;
@@ -49,10 +51,10 @@ public class GitHandler {
 		BPMS_REPO_URL = BC_PROPERTIES.getProperty("repoUrl");
 		REMOTE_REPO_URL = GIT_HUB_PROPERTIES.getProperty("repoUrl");
 		
-		REIDELBOT_CREDENTIALS_PROVIDER = new UsernamePasswordCredentialsProvider(GIT_HUB_PROPERTIES.getProperty("userName"), GIT_HUB_PROPERTIES.getProperty("password"));
+		AUTOMATED_USER_CREDENTIALS_PROVIDER = new UsernamePasswordCredentialsProvider(GIT_HUB_PROPERTIES.getProperty("userName"), GIT_HUB_PROPERTIES.getProperty("password"));
 		BPMS_ADMIN_CREDENTIALS_PROVIDER = new UsernamePasswordCredentialsProvider(BC_PROPERTIES.getProperty("userName"), BC_PROPERTIES.getProperty("password"));
 		
-		REMOTE = new Repo(REMOTE_REPO_NAME, REMOTE_REPO_URL, REIDELBOT_CREDENTIALS_PROVIDER);
+		REMOTE = new Repo(REMOTE_REPO_NAME, REMOTE_REPO_URL, AUTOMATED_USER_CREDENTIALS_PROVIDER);
 		BUSINESS_CENTRAL = new Repo(BUSINESS_CENTRAL_REPO_NAME,BPMS_REPO_URL, BPMS_ADMIN_CREDENTIALS_PROVIDER);
 	}
 
@@ -121,6 +123,32 @@ public class GitHandler {
 		}
 		return null;
 	}
+	
+	//This method overwrites the master branch of Business Central with the contents of the remote repo
+	public String overwriteWithRemoteRepo(){
+		String failureMessage = null;
+		Git git = null;
+		try {
+			git = createReferenceToLocalRepository();			
+			configureRemoteRepositories(git);
+			git.fetch().setRemote(REMOTE_REPO_NAME).call();
+			git.reset().setMode(ResetType.HARD).setRef(REMOTE_REPO_NAME + "/" + MASTER_BRANCH_NAME).call();
+			git.push().setRemote(BUSINESS_CENTRAL_REPO_NAME).setForce(true).call();
+		} catch (IOException | GitAPIException e) {
+			failureMessage = e.getMessage();
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		} finally {
+			if(git != null){
+				git.close();
+			}
+		}
+		if(!StringUtils.isEmptyOrNull(failureMessage)){
+			log.error(failureMessage);
+			return  failureMessage;
+		}
+		return null;	
+	}
 
 	private void configureRemoteRepositories(Git git) throws IOException {
 		StoredConfig config = git.getRepository().getConfig();
@@ -130,6 +158,8 @@ public class GitHandler {
 		config.setString("remote", REMOTE_REPO_NAME, "fetch", "+refs/heads/*:refs/remotes/remoteRepo/*");
 		config.save();
 	}
+	
+
 
 	private Git createReferenceToLocalRepository() throws IOException {
 		Git git;
