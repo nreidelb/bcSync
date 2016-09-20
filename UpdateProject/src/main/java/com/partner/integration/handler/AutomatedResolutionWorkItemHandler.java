@@ -6,16 +6,16 @@ import org.kie.api.runtime.process.WorkItem;
 import org.kie.api.runtime.process.WorkItemHandler;
 import org.kie.api.runtime.process.WorkItemManager;
 
-import com.partner.integration.conflictresolution.AutomatedResolutionHandler;
+import com.partner.integration.git.GitHandler;
 
 public class AutomatedResolutionWorkItemHandler implements WorkItemHandler {
-	
-	private AutomatedResolutionHandler automatedResolutionHandler = new AutomatedResolutionHandler();
 	
 	@Override
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
 		HashMap<String,Object> results = new HashMap<String,Object>();
-		automatedResolutionHandler.automatedResolution();
+		GitHandler gitHanlder = new GitHandler();
+		String result = gitHanlder.overwriteWithRemoteRepo();
+		results.put("errorMessage", result);
 		manager.completeWorkItem(workItem.getId(), results);	
 	}
 
