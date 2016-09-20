@@ -6,17 +6,8 @@ import java.util.Properties;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ResetCommand.ResetType;
-import org.eclipse.jgit.api.errors.CanceledException;
-import org.eclipse.jgit.api.errors.DetachedHeadException;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.InvalidConfigurationException;
-import org.eclipse.jgit.api.errors.InvalidRemoteException;
-import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.api.errors.RefAlreadyExistsException;
-import org.eclipse.jgit.api.errors.RefNotAdvertisedException;
-import org.eclipse.jgit.api.errors.RefNotFoundException;
-import org.eclipse.jgit.api.errors.TransportException;
-import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.lib.StoredConfig;
@@ -93,7 +84,7 @@ public class GitHandler {
 			
 			try{
 				git.checkout().setName(MASTER_BRANCH_NAME).call();
-				pull(pull, git);
+				git.pull().setRemote(pull.getName()).setRemoteBranchName(MASTER_BRANCH_NAME).setCredentialsProvider(pull.getCredentials()).call();
 				try{
 					git.checkout().setName(toBranch).setCreateBranch(true).call();
 				} catch(RefAlreadyExistsException e){
@@ -131,12 +122,6 @@ public class GitHandler {
 			return  failureMessage;
 		}
 		return null;
-	}
-
-	private void pull(Repo pull, Git git) throws GitAPIException, WrongRepositoryStateException,
-			InvalidConfigurationException, DetachedHeadException, InvalidRemoteException, CanceledException,
-			RefNotFoundException, RefNotAdvertisedException, NoHeadException, TransportException {
-		git.pull().setRemote(pull.getName()).setRemoteBranchName(MASTER_BRANCH_NAME).setCredentialsProvider(pull.getCredentials()).call();
 	}
 	
 	//This method overwrites the master branch of Business Central with the contents of the remote repo
