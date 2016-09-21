@@ -21,6 +21,7 @@ import org.eclipse.jgit.util.StringUtils;
 import org.jboss.logging.Logger;
 
 import com.partner.utility.PropertiesLoader;
+import com.partner.utility.StringParser;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -54,8 +55,8 @@ public class EmailHandler {
 			Template template = getFreemarkerConfiguration().getTemplate(templateFileName +".ftl");
 			
 			Map<String, Object> data = new HashMap<String, Object>();
-			data.put("gitRepo", GIT_HUB_PROPERTIES.getProperty("repoUrl"));
-			data.put("bcRepo", BC_PROPERTIES.getProperty("repoUrl"));
+			data.put("gitRepo", StringParser.removeUserPassword(GIT_HUB_PROPERTIES.getProperty("repoUrl")));
+			data.put("bcRepo",  StringParser.removeUserPassword(BC_PROPERTIES.getProperty("repoUrl")));
 			data.put("userContact", defaultIfNull(userContact,DEFAULT_EMAIL_PROPERTIES.getProperty("defaultUserContact")));
 			data.put("errorMessage",errorDetails);
             

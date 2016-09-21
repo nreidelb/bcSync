@@ -22,7 +22,7 @@ public class PropertiesLoader {
 			globalProp.load(is);
 			is.close();
 			if(globalProp.isEmpty()){
-				log.error("Could not find file" + name + " at location " + dataDir + name);
+				log.error("Could not find file " + name + " at location " + dataDir + name);
 			}
 			return globalProp;
 		} catch (IOException e) {
