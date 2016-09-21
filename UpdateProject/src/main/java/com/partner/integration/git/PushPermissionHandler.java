@@ -1,14 +1,26 @@
 package com.partner.integration.git;
 
+import java.util.Properties;
+
+import org.eclipse.jgit.util.StringUtils;
+import org.jboss.logging.Logger;
+
+import com.partner.utility.PropertiesLoader;
+
 public class PushPermissionHandler {
+	
+	private static final Logger log = Logger.getLogger(PushPermissionHandler.class.getName());
 
 	public PushPermissionHandler() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public Boolean checkPushPermission() {
-		//TODO implement this
-		Boolean hasPushPermission = false;
-		return hasPushPermission;
+		Properties generalProperties = PropertiesLoader.loadPropertiesFile("general");
+		String globalBaPushPermission = generalProperties.getProperty("baPushPermission");
+		
+		if(StringUtils.isEmptyOrNull(globalBaPushPermission)){
+			log.error("Variable globalBaPushPermission not set in general.properties defaulting to false");			
+		}
+		return Boolean.valueOf(globalBaPushPermission);
 	}
 }
