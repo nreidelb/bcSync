@@ -6,10 +6,10 @@ public class StringParser {
 		if(url == null){
 			return null;
 		}
-		if(url.indexOf("@")<0){
+		if(url.indexOf("@") < 0){
 			return url;
 		}
-		return url.substring(url.indexOf("@"), url.length());
+		return url.substring(url.indexOf("@") + 1, url.length());
 	}
 
 }
