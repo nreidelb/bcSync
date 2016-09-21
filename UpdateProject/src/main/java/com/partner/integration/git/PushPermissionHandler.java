@@ -15,7 +15,7 @@ public class PushPermissionHandler {
 	}
 
 	public Boolean checkPushPermission() {
-		Properties generalProperties = PropertiesLoader.loadPropertiesFile("general");
+		Properties generalProperties = PropertiesLoader.loadPropertiesFile("general.properties");
 		String globalBaPushPermission = generalProperties.getProperty("baPushPermission");
 		
 		if(StringUtils.isEmptyOrNull(globalBaPushPermission)){

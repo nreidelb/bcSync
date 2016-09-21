@@ -17,7 +17,7 @@ public class ResolutionStrategyHandler {
 
 	//True indicated manual resolution required false indicated auto resolve
 	public Boolean determineResolutionStrategy() {
-		Properties generalProperties = PropertiesLoader.loadPropertiesFile("general");
+		Properties generalProperties = PropertiesLoader.loadPropertiesFile("general.properties");
 		String resolutionStrategy = generalProperties.getProperty("resolutionStrategy");
 		
 		if(StringUtils.isEmptyOrNull(resolutionStrategy)){
