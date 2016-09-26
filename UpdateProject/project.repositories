@@ -3,8 +3,8 @@
     <repository>
       <include>true</include>
       <metadata>
-        <id>fusesource.snapshot</id>
-        <url>http://repo.fusesource.com/nexus/content/groups/public-snapshots/</url>
+        <id>fusesource</id>
+        <url>http://repo.fusesource.com/nexus/content/groups/public/</url>
         <source>SETTINGS</source>
       </metadata>
     </repository>
@@ -19,16 +19,8 @@
     <repository>
       <include>true</include>
       <metadata>
-        <id>local</id>
-        <url>/home/nreidelb/.m2/repository</url>
-        <source>LOCAL</source>
-      </metadata>
-    </repository>
-    <repository>
-      <include>true</include>
-      <metadata>
-        <id>brew</id>
-        <url>http://download.eng.bos.redhat.com/devel/candidates/BPMS/BPMS-6.3.0.ER3/maven-repository/maven-repository/</url>
+        <id>fusesource.snapshot</id>
+        <url>http://repo.fusesource.com/nexus/content/groups/public-snapshots/</url>
         <source>SETTINGS</source>
       </metadata>
     </repository>
@@ -59,16 +51,24 @@
     <repository>
       <include>true</include>
       <metadata>
-        <id>jboss-maven-repository</id>
-        <url>http://maven.repository.redhat.com/ga</url>
+        <id>brew</id>
+        <url>http://download.eng.bos.redhat.com/devel/candidates/BPMS/BPMS-6.3.0.ER3/maven-repository/maven-repository/</url>
         <source>SETTINGS</source>
       </metadata>
     </repository>
     <repository>
       <include>true</include>
       <metadata>
-        <id>fusesource</id>
-        <url>http://repo.fusesource.com/nexus/content/groups/public/</url>
+        <id>local</id>
+        <url>/home/nreidelb/.m2/repository</url>
+        <source>LOCAL</source>
+      </metadata>
+    </repository>
+    <repository>
+      <include>true</include>
+      <metadata>
+        <id>jboss-maven-repository</id>
+        <url>http://maven.repository.redhat.com/ga</url>
         <source>SETTINGS</source>
       </metadata>
     </repository>

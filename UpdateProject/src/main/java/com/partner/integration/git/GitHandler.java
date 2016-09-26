@@ -2,22 +2,26 @@ package com.partner.integration.git;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Properties;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ResetCommand.ResetType;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.api.errors.RefAlreadyExistsException;
+import org.eclipse.jgit.errors.NoWorkTreeException;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.lib.StoredConfig;
+import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.PushResult;
 import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.RemoteRefUpdate;
 import org.eclipse.jgit.transport.RemoteRefUpdate.Status;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
-import org.eclipse.jgit.util.StringUtils;
 import org.jboss.logging.Logger;
 
 import com.partner.utility.PropertiesLoader;
@@ -85,6 +89,10 @@ public class GitHandler {
 			try{
 				git.checkout().setName(MASTER_BRANCH_NAME).call();
 				git.pull().setRemote(pull.getName()).setRemoteBranchName(MASTER_BRANCH_NAME).setCredentialsProvider(pull.getCredentials()).call();
+				if(StringUtils.isEmpty(toBranch)){
+					toBranch = findDefaultBranch(git);
+					log.warn("no branch specified for pull request, defaulting to " + toBranch);
+				}
 				try{
 					git.checkout().setName(toBranch).setCreateBranch(true).call();
 				} catch(RefAlreadyExistsException e){
@@ -117,13 +125,77 @@ public class GitHandler {
 				git.close();
 			}
 		}
-		if(!StringUtils.isEmptyOrNull(failureMessage)){
+		if(!StringUtils.isEmpty(failureMessage)){
 			log.error(failureMessage);
 			return  failureMessage;
 		}
 		return null;
 	}
 	
+	public String findDefaultBranch(){
+		return findDefaultBranch(null);
+	}
+	
+	//Gets a semi unique identifier for a branch to use
+	private String findDefaultBranch(Git git) {
+		boolean needToClose = false;
+		try{
+		if(git == null){
+			needToClose = true;
+			git = createReferenceToLocalRepository();
+		}
+		Iterable<RevCommit> revisionLog = git.log().call();
+	    for (Iterator<RevCommit> iterator = revisionLog.iterator(); iterator.hasNext();) {
+	      RevCommit rev = iterator.next();
+	      if(rev.getAuthorIdent()!= null && rev.getAuthorIdent().getName() != null){
+	    	  return StringUtils.deleteWhitespace(rev.getAuthorIdent().getName());
+	      }
+	    }
+	    for (Iterator<RevCommit> iterator = revisionLog.iterator(); iterator.hasNext();) {
+		      RevCommit rev = iterator.next();
+		      if(rev.getAuthorIdent()!= null && rev.getAuthorIdent().getEmailAddress() != null){
+		    	  return StringUtils.deleteWhitespace(rev.getAuthorIdent().getEmailAddress());
+		      }
+		}
+		}catch(Exception e){
+			log.error(e.getMessage());
+		} finally {
+			if(needToClose){
+				git.close();
+			}
+		}
+	    log.error("Could not find a commit with a useable branch name.");
+	    return null;
+	}
+	
+	//Be careful to use this only after the latest commits are in the local repo.
+	public String findDefaultTitle() {
+		Git git = null;
+		try {
+			git = createReferenceToLocalRepository();
+		
+		Iterable<RevCommit> revisionLog = git.log().call();
+	    for (Iterator<RevCommit> iterator = revisionLog.iterator(); iterator.hasNext();) {
+	      RevCommit rev = iterator.next();
+	      if(!StringUtils.isEmpty(rev.getShortMessage())){
+	    	  return rev.getAuthorIdent().getName();
+	      }
+	    }
+		} catch (IOException e) {
+			log.error(e.getMessage());
+		} catch (NoHeadException e) {
+			log.error(e.getMessage());
+		} catch (GitAPIException e) {
+			log.error(e.getMessage());
+		}finally {
+			if(git != null){
+				git.close();
+			}
+		}
+		log.error("Could not find a commit with a useable pull request title.");
+	    return null;
+	}
+
 	//This method overwrites the master branch of Business Central with the contents of the remote repo
 	public String overwriteWithRemoteRepo(){
 		String failureMessage = null;
@@ -143,12 +215,14 @@ public class GitHandler {
 				git.close();
 			}
 		}
-		if(!StringUtils.isEmptyOrNull(failureMessage)){
+		if(!StringUtils.isEmpty(failureMessage)){
 			log.error(failureMessage);
 			return  failureMessage;
 		}
 		return null;	
 	}
+	
+
 
 	private void configureRemoteRepositories(Git git) throws IOException {
 		StoredConfig config = git.getRepository().getConfig();
@@ -209,5 +283,7 @@ public class GitHandler {
 			this.credentials = credentials;
 		}
 	}
+
+	
 
 }

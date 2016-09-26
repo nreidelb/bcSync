@@ -39,7 +39,17 @@
 	    <artifactId>kie-api</artifactId>
 	    <version>6.4.0.Final</version>
 	</dependency>
+	<dependency>
+	    <groupId>commons-lang</groupId>
+	    <artifactId>commons-lang</artifactId>
+    <version>2.6</version>
+</dependency>
   </dependencies>
+  
+  	<properties>
+		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
+	</properties>
   
   <repositories>
     <repository>
