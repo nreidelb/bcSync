@@ -12,6 +12,7 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.api.errors.RefAlreadyExistsException;
 import org.eclipse.jgit.errors.NoWorkTreeException;
+import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.lib.StoredConfig;
@@ -120,6 +121,10 @@ public class GitHandler {
 			}			
 		} catch (IOException e) {
 			failureMessage = e.getMessage();
+		} catch (NoWorkTreeException e) {
+			failureMessage = e.getMessage();
+		} catch (GitAPIException e) {
+			failureMessage = e.getMessage();
 		} finally {
 			if(git != null){
 				git.close();
@@ -146,15 +151,17 @@ public class GitHandler {
 		}
 		Iterable<RevCommit> revisionLog = git.log().call();
 	    for (Iterator<RevCommit> iterator = revisionLog.iterator(); iterator.hasNext();) {
-	      RevCommit rev = iterator.next();
-	      if(rev.getAuthorIdent()!= null && rev.getAuthorIdent().getName() != null){
-	    	  return StringUtils.deleteWhitespace(rev.getAuthorIdent().getName());
-	      }
+		    RevCommit rev = iterator.next();
+		    PersonIdent author = rev.getAuthorIdent();
+			if(author!= null && author.getName() != null){
+		    	  return StringUtils.deleteWhitespace(author.getName());
+		      }
 	    }
 	    for (Iterator<RevCommit> iterator = revisionLog.iterator(); iterator.hasNext();) {
-		      RevCommit rev = iterator.next();
-		      if(rev.getAuthorIdent()!= null && rev.getAuthorIdent().getEmailAddress() != null){
-		    	  return StringUtils.deleteWhitespace(rev.getAuthorIdent().getEmailAddress());
+		    RevCommit rev = iterator.next();
+		    PersonIdent author = rev.getAuthorIdent();
+			if(author!= null && author.getEmailAddress() != null){
+		    	  return StringUtils.deleteWhitespace(author.getEmailAddress());
 		      }
 		}
 		}catch(Exception e){
@@ -235,7 +242,7 @@ public class GitHandler {
 	
 
 
-	private Git createReferenceToLocalRepository() throws IOException {
+	private Git createReferenceToLocalRepository() throws IOException, NoWorkTreeException, GitAPIException {
 		Git git;
 		FileRepositoryBuilder builder = new FileRepositoryBuilder();
 		   
@@ -245,6 +252,11 @@ public class GitHandler {
 		        .build();
 		
 		git = new Git(repository);
+		
+		//If there are conflicts, clear out the local repo since conflicts will be resolved by a developer elsewhere
+		if(!git.status().call().getConflicting().isEmpty()){
+			git.reset().setRef("HEAD~").setMode(ResetType.HARD).call();
+		}
 		return git;
 	}
 	
