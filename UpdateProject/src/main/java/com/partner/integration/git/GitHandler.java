@@ -12,6 +12,7 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.api.errors.RefAlreadyExistsException;
 import org.eclipse.jgit.errors.NoWorkTreeException;
+import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.lib.StoredConfig;
@@ -146,15 +147,17 @@ public class GitHandler {
 		}
 		Iterable<RevCommit> revisionLog = git.log().call();
 	    for (Iterator<RevCommit> iterator = revisionLog.iterator(); iterator.hasNext();) {
-	      RevCommit rev = iterator.next();
-	      if(rev.getAuthorIdent()!= null && rev.getAuthorIdent().getName() != null){
-	    	  return StringUtils.deleteWhitespace(rev.getAuthorIdent().getName());
-	      }
+		    RevCommit rev = iterator.next();
+		    PersonIdent author = rev.getAuthorIdent();
+			if(author!= null && author.getName() != null){
+		    	  return StringUtils.deleteWhitespace(author.getName());
+		      }
 	    }
 	    for (Iterator<RevCommit> iterator = revisionLog.iterator(); iterator.hasNext();) {
-		      RevCommit rev = iterator.next();
-		      if(rev.getAuthorIdent()!= null && rev.getAuthorIdent().getEmailAddress() != null){
-		    	  return StringUtils.deleteWhitespace(rev.getAuthorIdent().getEmailAddress());
+		    RevCommit rev = iterator.next();
+		    PersonIdent author = rev.getAuthorIdent();
+			if(author!= null && author.getEmailAddress() != null){
+		    	  return StringUtils.deleteWhitespace(author.getEmailAddress());
 		      }
 		}
 		}catch(Exception e){
