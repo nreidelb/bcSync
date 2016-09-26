@@ -253,6 +253,7 @@ public class GitHandler {
 		
 		git = new Git(repository);
 		
+		//If there are conflicts, clear out the local repo since conflicts will be resolved by a developer elsewhere
 		if(!git.status().call().getConflicting().isEmpty()){
 			git.reset().setRef("HEAD~").setMode(ResetType.HARD).call();
 		}
