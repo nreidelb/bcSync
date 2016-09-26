@@ -254,7 +254,7 @@ public class GitHandler {
 		git = new Git(repository);
 		
 		if(!git.status().call().getConflicting().isEmpty()){
-			git.reset().setRef("~HEAD").setMode(ResetType.HARD);
+			git.reset().setRef("~HEAD").setMode(ResetType.HARD).call();
 		}
 		return git;
 	}
