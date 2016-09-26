@@ -27,11 +27,16 @@ public class CreatePullRequestWorkItemHandler implements WorkItemHandler {
 		
 		HashMap<String,Object> results = new HashMap<String,Object>();
 		
+		if(StringUtils.isEmpty(branch)){
+			branch = gitHandler.findDefaultBranch();
+			log.warn("No branch specified defaulting to branch name '" + branch + "'");
+		}
+		
 		gitHandler.pullRequestToEnterpriseGit(branch);
 		
 		if(StringUtils.isEmpty(title)){
 			title = gitHandler.findDefaultTitle();
-			log.warn("No pull request title specified name specified, defaulting title to " + title );
+			log.warn("No pull request title specified name specified, defaulting title to '" + title + "'" );
 		}
 		
 		gitHubHandler.createPullRequest(title, message, branch);

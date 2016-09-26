@@ -132,8 +132,18 @@ public class GitHandler {
 		return null;
 	}
 	
+	public String findDefaultBranch(){
+		return findDefaultBranch(null);
+	}
+	
 	//Gets a semi unique identifier for a branch to use
-	private String findDefaultBranch(Git git) throws NoWorkTreeException, GitAPIException, IOException {
+	private String findDefaultBranch(Git git) {
+		boolean needToClose = false;
+		try{
+		if(git == null){
+			needToClose = true;
+			git = createReferenceToLocalRepository();
+		}
 		Iterable<RevCommit> revisionLog = git.log().call();
 	    for (Iterator<RevCommit> iterator = revisionLog.iterator(); iterator.hasNext();) {
 	      RevCommit rev = iterator.next();
@@ -146,6 +156,13 @@ public class GitHandler {
 		      if(rev.getAuthorIdent()!= null && rev.getAuthorIdent().getEmailAddress() != null){
 		    	  return StringUtils.deleteWhitespace(rev.getAuthorIdent().getEmailAddress());
 		      }
+		}
+		}catch(Exception e){
+			log.error(e.getMessage());
+		} finally {
+			if(needToClose){
+				git.close();
+			}
 		}
 	    log.error("Could not find a commit with a useable branch name.");
 	    return null;
