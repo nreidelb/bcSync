@@ -121,6 +121,10 @@ public class GitHandler {
 			}			
 		} catch (IOException e) {
 			failureMessage = e.getMessage();
+		} catch (NoWorkTreeException e) {
+			failureMessage = e.getMessage();
+		} catch (GitAPIException e) {
+			failureMessage = e.getMessage();
 		} finally {
 			if(git != null){
 				git.close();
@@ -238,7 +242,7 @@ public class GitHandler {
 	
 
 
-	private Git createReferenceToLocalRepository() throws IOException {
+	private Git createReferenceToLocalRepository() throws IOException, NoWorkTreeException, GitAPIException {
 		Git git;
 		FileRepositoryBuilder builder = new FileRepositoryBuilder();
 		   
@@ -248,6 +252,10 @@ public class GitHandler {
 		        .build();
 		
 		git = new Git(repository);
+		
+		if(!git.status().call().getConflicting().isEmpty()){
+			git.reset().setRef("~HEAD").setMode(ResetType.HARD);
+		}
 		return git;
 	}
 	
