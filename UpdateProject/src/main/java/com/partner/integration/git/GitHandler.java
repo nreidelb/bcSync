@@ -2,8 +2,12 @@ package com.partner.integration.git;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.Set;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.jgit.api.Git;
@@ -25,6 +29,7 @@ import org.eclipse.jgit.transport.RemoteRefUpdate.Status;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.jboss.logging.Logger;
 
+import com.partner.integration.git.GitHandler.PullException;
 import com.partner.utility.PropertiesLoader;
 
 public class GitHandler {
@@ -229,7 +234,38 @@ public class GitHandler {
 		return null;	
 	}
 	
+	//Only when pulling to
+	public Set<String> findUsersResponsibleForChanges() throws PullException{
+		String failureMessage = null;
+		Git git = null;
+		Set<String> usersWhoComitted = new HashSet<String>();
 
+		try {
+			git = createReferenceToLocalRepository();
+			
+			configureRemoteRepositories(git);
+			//Ensure changes from BC are reflected locally
+			git.checkout().setName(MASTER_BRANCH_NAME).call();
+			git.pull().setRemote(BUSINESS_CENTRAL.getName()).setRemoteBranchName(MASTER_BRANCH_NAME).setCredentialsProvider(BUSINESS_CENTRAL.getCredentials()).call();
+			
+			Iterator<RevCommit> gitLogsBC = git.log().call().iterator();
+			git.fetch().setRemote(REMOTE.getName()).call();
+			
+			Iterator<RevCommit> itLogsRemote = git.log().addPath(REMOTE.getName()+ "/" + MASTER_BRANCH_NAME).call().iterator();
+			RevCommit firstRemoteCommit = itLogsRemote.next();
+			while(gitLogsBC.hasNext()){
+				RevCommit next = gitLogsBC.next();
+				if(next.getId().equals(firstRemoteCommit.getId())){
+					break;
+				} else {
+					usersWhoComitted.add(next.getAuthorIdent().getName());
+				}
+			}
+		} catch(Exception e){
+			throw new PullException();
+		}
+		return usersWhoComitted;
+	}
 
 	private void configureRemoteRepositories(Git git) throws IOException {
 		StoredConfig config = git.getRepository().getConfig();
@@ -296,6 +332,8 @@ public class GitHandler {
 		}
 	}
 
-	
+	public class PullException extends Exception {
+
+	}
 
 }
