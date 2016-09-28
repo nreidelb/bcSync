@@ -262,6 +262,8 @@ public class GitHandler {
 				}
 			}
 		} catch(Exception e){
+			log.error(e.getMessage());
+			git.close();
 			throw new PullException();
 		}
 		return usersWhoComitted;
