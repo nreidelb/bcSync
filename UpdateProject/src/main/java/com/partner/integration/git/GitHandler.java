@@ -256,7 +256,7 @@ public class GitHandler {
 			RevCommit firstRemoteCommit = itLogsRemote.next();
 			while(gitLogsBC.hasNext()){
 				RevCommit next = gitLogsBC.next();
-				if(next.getName().equals(firstRemoteCommit.getId())){
+				if(next.getName().equals(firstRemoteCommit.getName())){
 					break;
 				} else {
 					usersWhoComitted.add(next.getAuthorIdent().getName());
@@ -268,6 +268,9 @@ public class GitHandler {
 			throw new PullException();
 		}
 		git.close();
+		for(String user:usersWhoComitted){
+			log.info("found user: "+ user);
+		}
 		return usersWhoComitted;
 	}
 
