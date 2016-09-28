@@ -252,13 +252,11 @@ public class GitHandler {
 			Iterator<RevCommit> gitLogsBC = git.log().call().iterator();
 			git.fetch().setRemote(REMOTE.getName()).call();
 			
-			Iterator<RevCommit> itLogsRemote = git.log().addPath(REMOTE.getName()+ "/" + MASTER_BRANCH_NAME).call().iterator();
+			Iterator<RevCommit> itLogsRemote = git.log().add(git.getRepository().resolve("remotes/"+REMOTE.getName()+ "/" + MASTER_BRANCH_NAME)).call().iterator();
 			RevCommit firstRemoteCommit = itLogsRemote.next();
 			while(gitLogsBC.hasNext()){
 				RevCommit next = gitLogsBC.next();
-				ObjectId nextId = next.getId();
-				String nextMessage = next.getFullMessage();
-				if(nextId.equals(firstRemoteCommit.getId())){
+				if(next.getName().equals(firstRemoteCommit.getId())){
 					break;
 				} else {
 					usersWhoComitted.add(next.getAuthorIdent().getName());
