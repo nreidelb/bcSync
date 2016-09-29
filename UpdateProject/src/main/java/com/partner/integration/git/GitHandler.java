@@ -269,7 +269,7 @@ public class GitHandler {
 		}
 		git.close();
 		for(String user:usersWhoComitted){
-			log.info("found user: "+ user);
+			log.info("found user who made changes: "+ user);
 		}
 		return usersWhoComitted;
 	}
